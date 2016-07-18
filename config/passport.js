@@ -17,6 +17,19 @@ passport.use('local.signup', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, function(req, email, password, done) {
+    // use express-validator to validate fields
+    req.checkBody('email', 'Invalid Email').notEmpty().isEmail();
+    req.checkBody('password', 'Invalid Password').notEmpty().isLength({min: 4});
+    // capture any validation errors
+    var errors = req.validationErrors();
+    if (errors) {
+        var messages = [];
+        errors.forEach(function(error) {
+           messages.push(error.msg); 
+        });
+        return done(null, false, req.flash('error', messages));
+    }
+    // check that email is not already in use
     User.findOne({'email': email}, function(err, user) {
         if (err) {
             return done(err);
@@ -24,6 +37,7 @@ passport.use('local.signup', new LocalStrategy({
         if (user) {
             return done(null, false, {message: 'Email is already in use.'});
         }
+        // save to data base
         var newUser = new User();
           newUser.email = email;
           newUser.password = newUser.encryptPassword(password);
@@ -33,5 +47,38 @@ passport.use('local.signup', new LocalStrategy({
               }
               return done(null, newUser);
           });
+    });
+}));
+
+
+passport.use('local.signin', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+}, function(req, email, password, done) {
+    // use express-validator to validate fields
+    req.checkBody('email', 'Invalid Email').notEmpty().isEmail();
+    req.checkBody('password', 'Invalid Password').notEmpty();
+    // capture any validation errors
+    var errors = req.validationErrors();
+    if (errors) {
+        var messages = [];
+        errors.forEach(function(error) {
+           messages.push(error.msg); 
+        });
+        return done(null, false, req.flash('error', messages));
+    }
+    // find and return the use
+    User.findOne({'email': email}, function(err, user) {
+        if (err) {
+            return done(err);
+        }
+        if (!user) {
+            return done(null, false, {message: 'No user found.'});
+        }
+        if (!user.validPassword(password)) {
+            return done(null, false, {message: 'Invalid Password.'});
+        }
+        return done(null, user);
     });
 }));

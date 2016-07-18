@@ -7,8 +7,8 @@
 6 silly lifecycle shopping@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle shopping@0.0.0~start: shopping@0.0.0
 8 verbose lifecycle shopping@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle shopping@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/andy/js-projects/shopping/node_modules/.bin:/usr/bin:/home/andy/npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-10 verbose lifecycle shopping@0.0.0~start: CWD: /home/andy/js-projects/shopping
+9 verbose lifecycle shopping@0.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/andy/shopping/node_modules/.bin:/usr/bin:/home/andy/npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+10 verbose lifecycle shopping@0.0.0~start: CWD: /home/andy/shopping
 11 silly lifecycle shopping@0.0.0~start: Args: [ '-c', 'node ./bin/www' ]
 12 silly lifecycle shopping@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle shopping@0.0.0~start: Failed to exec start script
@@ -23,8 +23,8 @@
 14 verbose stack     at maybeClose (internal/child_process.js:850:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:215:5)
 15 verbose pkgid shopping@0.0.0
-16 verbose cwd /home/andy/js-projects/shopping
-17 error Linux 3.19.0-64-generic
+16 verbose cwd /home/andy/shopping
+17 error Linux 3.19.0-65-generic
 18 error argv "/usr/bin/nodejs" "/usr/bin/npm" "start"
 19 error node v5.12.0
 20 error npm  v3.8.6
