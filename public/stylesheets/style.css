@@ -14,3 +14,8 @@ a {
 .thumbnail .description {
     color: #7f7f7f;
 }
+
+.full-width {
+    display: block;
+    width: 100%;
+}
