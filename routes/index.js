@@ -3,6 +3,7 @@ var router = express.Router();
 var Cart = require('../models/cart');
 
 var Product = require('../models/products');
+var Order = require('../models/order');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -71,15 +72,23 @@ router.post('/checkout', function(req, res, next) {
         source: req.body.stripeToken,
         description: "Example charge"
     }, function(err, charge) {
-           if (err && err.type === 'StripeCardError') {
-               // The card has been declined
-               req.flash('error', err.message);
-               return res.redirect('/checkout');
-           } else {
-               req.flash('success', 'You made a purchase!');
-               req.session.cart = null;
-               res.redirect('/');
-           }
+        if (err && err.type === 'StripeCardError') {
+            // The card has been declined
+            req.flash('error', err.message);
+            return res.redirect('/checkout');
+        } 
+        var order = new Order({
+            user: req.user,
+            cart: cart,
+            address: req.body.address,
+            name: req.body.name,
+            paymentId: charge.id
+        });
+        order.save(function(err, result) {
+            req.flash('success', 'You made a purchase!');
+            req.session.cart = null;
+            res.redirect('/');     
+        });
     });
 });
 
