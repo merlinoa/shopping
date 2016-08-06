@@ -44,7 +44,7 @@ router.get('/shopping-cart', function(req, res, next) {
    });
 });
 
-router.get('/checkout', function(req, res, next) {
+router.get('/checkout', isLoggedIn, function(req, res, next) {
    if(!req.session.cart) {
        return res.redirect('/shopping-cart');
    }
@@ -57,7 +57,7 @@ router.get('/checkout', function(req, res, next) {
    }); 
 });
 
-router.post('/checkout', function(req, res, next) {
+router.post('/checkout', isLoggedIn, function(req, res, next) {
     if (!req.session.cart) {
         return res.redirect('/shopping-cart');
     }
@@ -93,3 +93,13 @@ router.post('/checkout', function(req, res, next) {
 });
 
 module.exports = router;
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    // store the old url so that we can return to 
+    // the cart checkout once the user signs in
+    req.session.oldUrl = req.url;
+    res.redirect('/user/signin');
+}
